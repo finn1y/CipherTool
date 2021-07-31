@@ -11,34 +11,34 @@ main.o: main.cpp
 application.o: application.cpp application.h
 	${CC} ${CFLAGS} -c $^
 
-aes_menu.o: aes_menu.cpp menu.cpp menu.h aes_menu.h
+aes_menu.o: menus/aes_menu.cpp menus/menu.cpp menus/menu.h menus/aes_menu.h
 	${CC} ${CFLAGS} -c $^
 
-xor_menu.o: xor_menu.cpp menu.cpp menu.h xor_menu.h 
+xor_menu.o: menus/xor_menu.cpp menus/menu.cpp menus/menu.h menus/xor_menu.h 
 	${CC} ${CFLAGS} -c $^
 	
-james_menu.o: james_menu.cpp menu.cpp menu.h james_menu.h
+james_menu.o: menus/james_menu.cpp menus/menu.cpp menus/menu.h menus/james_menu.h
 	${CC} ${CFLAGS} -c $^
 
-jj_menu.o: jj_menu.cpp menu.cpp menu.h jj_menu.h
+jj_menu.o: menus/jj_menu.cpp menus/menu.cpp menus/menu.h menus/jj_menu.h
 	${CC} ${CFLAGS} -c $^
 
-finn_menu.o: finn_menu.cpp menu.cpp menu.h finn_menu.h 
+finn_menu.o: menus/finn_menu.cpp menus/menu.cpp menus/menu.h menus/finn_menu.h 
 	${CC} ${CFLAGS} -c $^
 
-main_menu.o: main_menu.cpp menu.cpp menu.h main_menu.h 
+main_menu.o: menus/main_menu.cpp menus/menu.cpp menus/menu.h menus/main_menu.h 
 	${CC} ${CFLAGS} -c $^
 
-menu.o: menu.cpp menu.h
+menu.o: menus/menu.cpp menus/menu.h
 	${CC} ${CFLAGS} -c $^
 
-otp.o: otp.cpp otp.h
+otp.o: ciphers/otp.cpp ciphers/otp.h
 	${CC} ${CFLAGS} -c $^
 
-aes.o: aes.cpp aes.h
+aes.o: ciphers/aes.cpp ciphers/aes.h
 	${CC} ${CFLAGS} -c $^
 
-xor.o: xor.cpp xor.h
+xor.o: ciphers/xor.cpp ciphers/xor.h
 	${CC} ${CFLAGS} -c $^
 
 .PHONY: clean
