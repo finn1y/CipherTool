@@ -9,14 +9,14 @@ Project by: Finn, JJ & James
   git clone https://github.com/finn1y/CipherTool.git
   2. Navigate to the bin directory
   3. Run the binary for your system:
-    Linux
-    ```
-    ./cipher_tool-linux64
-    ```
-    Windows
-    ```
-    .\cipher_tool-win64.exe
-    ```
+      Linux
+      ```
+      ./cipher_tool-linux64
+      ```
+      Windows
+      ```
+      .\cipher_tool-win64.exe
+      ```
   4. Happy encrypting!
 
 ## Build your own binary:
