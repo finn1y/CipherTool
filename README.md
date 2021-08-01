@@ -24,6 +24,9 @@ git clone https://github.com/finn1y/CipherTool.git
 4. Happy encrypting!
 
 ## Build your own binary
+
+To build your own binary you must have [make](http://gnuwin32.sourceforge.net/install.html) on your machine.
+
 1. Clone the repo:
 
 ```
