@@ -6,7 +6,9 @@ Project by: Finn, JJ & James
 
 ## Install:
   1. Clone the repo:
+  ```
   git clone https://github.com/finn1y/CipherTool.git
+  ```
   2. Navigate to the bin directory
   3. Run the binary for your system:
       Linux
