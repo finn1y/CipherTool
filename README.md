@@ -4,7 +4,7 @@ Command line interface gui tool for encrypting and decrypting files or standard 
 
 Project by: Finn, JJ & James
 
-## Install:
+## Install
   1. Clone the repo:
 
   ```
@@ -23,7 +23,7 @@ Project by: Finn, JJ & James
         ```
   4. Happy encrypting!
 
-## Build your own binary:
+## Build your own binary
   1. Clone the repo:
 
   ```
