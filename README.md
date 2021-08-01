@@ -11,6 +11,7 @@ Project by: Finn, JJ & James
   ```
   2. Navigate to the bin directory
   3. Run the binary for your system:
+      
       Linux
       ```
       ./cipher_tool-linux64
