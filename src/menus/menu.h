@@ -6,7 +6,6 @@
 #include <string>
 #include <fstream>
 #include <iomanip>
-#include <fstream>
 
 // abstract base class uses pure virtual functions which do not need to be declared
 // using pure virtual functions means any derived menu class can define the functions as needed by that specific class
