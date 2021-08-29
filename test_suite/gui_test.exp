@@ -4,24 +4,28 @@ set timeout -1
 
 log_user 0
 
+proc help_msg {} {
+    puts "Usage: gui_smoke.exp \[OPTIONS\] CIPHER FILE\n"
+    puts "Options:"
+    puts "  -h, --help\tshows this message"
+    puts "  CIPHER\tcipher to test"
+    puts "  FILE\t\tfile to perform tests on\n"
+    puts "Ciphers:"
+    puts "  XOR\n  Rjindaels (AES)\n  One-Time Pad (OTP)"
+    exit 0
+}
+
 #script takes name of cipher to test and file to test on
 if {[llength $argv] < 2 && [lindex $argv 0] != "-h" && [lindex $argv 0] != "--help"} { 
-    puts "No argument supplied"
+    puts "Missing arguments"
+    help_msg
     exit 1
 }
 
 switch [lindex $argv 0] {
     "-h" -
     "--help" {
-        #help message
-        puts "Usage: gui_smoke.exp \[OPTIONS\] CIPHER FILE\n"
-        puts "Options:"
-        puts "  -h, --help\tshows this message"
-        puts "  CIPHER\tcipher to test"
-        puts "  FILE\t\tfile to perform tests on\n"
-        puts "Ciphers:"
-        puts "  XOR\n  Rjindaels (AES)\n  One-Time Pad (OTP)"
-        exit 0
+        help_msg
     }
 
     "XOR" -
