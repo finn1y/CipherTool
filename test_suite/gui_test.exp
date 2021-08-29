@@ -1,0 +1,200 @@
+#!/usr/bin/env expect
+
+set timeout -1
+
+log_user 0
+
+#script takes name of cipher to test and file to test on
+if {[llength $argv] < 2 && [lindex $argv 0] != "-h" && [lindex $argv 0] != "--help"} { 
+    puts "No argument supplied"
+    exit 1
+}
+
+switch [lindex $argv 0] {
+    "-h" -
+    "--help" {
+        #help message
+        puts "Usage: gui_smoke.exp \[OPTIONS\] CIPHER FILE\n"
+        puts "Options:"
+        puts "  -h, --help\tshows this message"
+        puts "  CIPHER\tcipher to test"
+        puts "  FILE\t\tfile to perform tests on\n"
+        puts "Ciphers:"
+        puts "  XOR\n  Rjindaels (AES)\n  One-Time Pad (OTP)"
+        exit 0
+    }
+
+    "XOR" -
+    "xor" -
+    "Xor" {
+        puts "Testing XOR cipher"
+        
+        set main_menu 1;
+        set second_menu 1;
+    }
+
+    "AES" -
+    "aes" -
+    "Aes" -
+    "Rjindael" -
+    "Rjindaels" -
+    "rjindael" -
+    "rjindaels" {
+        puts "Testing Rjindael's cipher (AES)"
+
+        set main_menu 1;
+        set second_menu 2;
+    }
+
+    "OTP" -
+    "otp" -
+    "Otp" -
+    "OneTimePad" {
+        puts "Testing One-Time Pad cipher"
+
+        set main_menu 2;
+    }
+
+    default {
+        puts "Unknown cipher supplied\nChoose one of:\n'XOR'\n'AES'\n'OTP'"
+        exit 1
+    }
+}
+
+set test_file [file tail [lindex $argv 1]];
+set test_file_path [file dirname [lindex $argv 1]];
+
+proc comp_file {file1 file2} {
+    set equal 0
+    
+    if {[file size $file1] == [file size $file2]} {
+        set f1 [open $file1 r];
+        set f2 [open $file2 r];
+        set equal [string equal [read $f1] [read $f2]];
+        close $f1
+        close $f2
+    }
+    
+    return $equal
+}
+
+proc finn_menu_file {en_de filename key new_filename} {
+    expect "Enter desired menu option: "
+    send "$en_de\n"
+    expect "Enter file name: "
+    send "$filename\n"
+    expect "Do you have a key?(y/n): "
+    send "y\n"    
+    expect "Enter key: "
+    send "$key\n"
+    expect "Do you want to overwite the file?(y/n): "
+    send "n\n"
+    expect "Enter new file name: "
+    send "$new_filename\n"
+    expect "Exit?(y/n): "
+    send "n\n"
+}
+
+proc jj_menu_file {en_de filename key_file new_filename} {
+    expect "Enter desired menu option: "
+    send "$en_de\n"
+    expect "Enter the name of a file: "
+    send "$filename\n"
+    expect "Enter the name of a file: "
+    send "$key_file\n"
+    expect "Would you like to output the result to a file? (Y/N): "
+    send "y\n"
+    expect "What would you like to name the file?: "
+    send "$new_filename\n"
+}
+
+spawn ./bin/cipher_tool
+
+#Main menu
+expect "Enter a menu option: " 
+send "$main_menu\n"
+
+switch $main_menu {
+    1 {
+        #Finn menu
+        expect "Enter desired menu option: "
+        send "$second_menu\n"
+        
+        switch $second_menu {
+            1 {
+                #XOR
+                #Test file XOR with given key
+                #Encrypt plaintext file
+                finn_menu_file 1 $test_file_path/$test_file 1234 $test_file_path/ciphertext.txt 
+                #decrypt plaintext file
+                finn_menu_file 2 $test_file_path/ciphertext.txt 1234 $test_file_path/decrypted_plaintext.txt
+
+                if {[comp_file $test_file_path/$test_file $test_file_path/decrypted_plaintext.txt]} {
+                    puts "Test passed"
+                } else {
+                    puts "Test failed"
+                } 
+
+            }
+            
+            2 {
+                #AES
+                #Encrypt plaintext file
+                finn_menu_file 1 $test_file_path/$test_file 1234 $test_file_path/ciphertext.txt 
+                #decrypt plaintext file
+                finn_menu_file 2 $test_file_path/ciphertext.txt 1234 $test_file_path/decrypted_plaintext.txt
+
+                if {[comp_file $test_file_path/$test_file $test_file_path/decrypted_plaintext.txt]} {
+                    puts "Test passed"
+                } else {
+                    puts "Test failed"
+                }
+            }
+        }
+    }
+
+    2 {
+        #JJ menu
+        #gen key
+        expect "Enter desired menu option: "
+        send "3\n"
+        expect "Enter the length of the key you require... (Key must be equal or longer than text you wish to encrypt/decrypt): "
+        send "[file size $test_file_path/$test_file]\n"
+        expect "Would you like to output the result to a file? (Y/N): "
+        send "y\n"
+        expect "What would you like to name the file?: "
+        send "$test_file_path/OTP_key\n"
+        #encrypt file
+        jj_menu_file 2 $test_file_path/$test_file $test_file_path/OTP_key $test_file_path/ciphertext.txt
+        #decrypt file
+        jj_menu_file 1 $test_file_path/ciphertext.txt $test_file_path/OTP_key $test_file_path/decrypted_plaintext.txt
+
+        #OTP decrypts into all capitals therefore need plaintext formatted as all capitals
+        #read plaintext file
+        set f [open $test_file_path/$test_file r];
+        set file_data [read $f];
+        close $f
+        #format plaintext data to all capitals
+        set file_data [string toupper $file_data];
+        #write formatted data to new file
+        set f [open $test_file_path/upper_$test_file w];
+        puts -nonewline $f $file_data
+        close $f
+
+        if {[comp_file $test_file_path/upper_$test_file $test_file_path/decrypted_plaintext.txt]} {
+            puts "Test passed"
+        } else {
+            puts "Test failed"
+        }
+    }
+
+    3 {
+        #James menu
+        expect "Enter desired menu option: "
+        send "$second_menu\n"
+        
+    }
+}
+
+#for debug
+#interact
