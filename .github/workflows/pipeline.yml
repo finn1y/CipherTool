@@ -13,5 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Make executable
+      run: chmod +x test_suite/ci.sh test_suite/gui_test.exp
     - name: ci
       run: ./test_suite/ci.sh
