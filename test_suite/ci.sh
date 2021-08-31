@@ -6,8 +6,18 @@ cd `dirname $0`/../
 ##Clean workspace
 echo "Cleaning Workspace"
 make -C src clean_all
-rm -rf bin/cipher_tool
-rm -rf test_suite/txt/*
+
+if [ -f bin/cipher_tool ]; then
+    rm -rf bin/cipher_tool
+fi
+
+if [ -e test_suite/txt/* ]; then
+    rm -rf test_suite/txt/*
+fi
+
+if [ -f test_status ]; then
+    rm -rf test_status
+fi
 
 #Build CipherTool
 echo "Building CipherTool"
