@@ -1,7 +1,4 @@
 #include "main_menu.h"
-#include "finn_menu.h"
-#include "jj_menu.h"
-#include "james_menu.h"
 
 // string to int function documentation at https://docs.microsoft.com/en-us/cpp/standard-library/string-functions?view=msvc-160#stoi
 

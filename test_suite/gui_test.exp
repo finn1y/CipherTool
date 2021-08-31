@@ -31,7 +31,7 @@ switch [lindex $argv 0] {
     "XOR" -
     "xor" -
     "Xor" {
-        puts "Testing XOR cipher"
+        puts "Testing XOR cipher gui"
         
         set main_menu 1;
         set second_menu 1;
@@ -44,7 +44,7 @@ switch [lindex $argv 0] {
     "Rjindaels" -
     "rjindael" -
     "rjindaels" {
-        puts "Testing Rjindael's cipher (AES)"
+        puts "Testing Rjindael's cipher (AES) gui"
 
         set main_menu 1;
         set second_menu 2;
@@ -54,7 +54,7 @@ switch [lindex $argv 0] {
     "otp" -
     "Otp" -
     "OneTimePad" {
-        puts "Testing One-Time Pad cipher"
+        puts "Testing One-Time Pad cipher gui"
 
         set main_menu 2;
     }
@@ -112,7 +112,7 @@ proc jj_menu_file {en_de filename key_file new_filename} {
     send "$new_filename\n"
 }
 
-spawn ./bin/cipher_tool
+spawn ./bin/cipher_tool --gui
 
 #Main menu
 expect "Enter a menu option: " 

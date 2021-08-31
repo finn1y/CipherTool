@@ -28,6 +28,7 @@ echo "Running smoke tests"
 ./test_suite/gui_test.exp XOR test_suite/txt/plaintext.txt | tee -a test_status
 ./test_suite/gui_test.exp AES test_suite/txt/plaintext.txt | tee -a test_status
 ./test_suite/gui_test.exp OTP test_suite/txt/plaintext.txt | tee -a test_status
+./test_suite/cmd_test.sh | tee -a test_status
 
 #Check for pass or fail
 FAILS=`grep -l "Test failed" test_status | wc -l`

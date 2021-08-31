@@ -2,6 +2,9 @@
 #define MAINMENU_H
 
 #include "menu.h" 
+#include "finn_menu.h"
+#include "jj_menu.h"
+#include "james_menu.h"
 
 class main_menu: public menu {
 
