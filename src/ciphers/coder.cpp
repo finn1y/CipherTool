@@ -183,9 +183,23 @@ std::string Coder::aes_cipher(int en_de, std::string input) {
 std::string Coder::otp_cipher(int en_de, std::string input) {
 	//Clear and set variables for the output - The encrypted text
 	std::string output = "";
+    std::string key;
 	int keyCounter = 0;
     this->_otp = new OTP;
 
+    if (this->_key.empty()) {
+	    srand(time(NULL));
+    
+    	for (size_t i = 0; i < input.size(); i++) {
+		    int randInt = rand() % 36;
+	    	key.push_back(this->_otp->alphaNum[randInt]);
+    	}
+
+        std::cout << "Key: " << key << std::endl;
+    }
+    else {
+        key = this->_key;
+    }
 	//Iterate through each character in the plain text
 	for (size_t i = 0; i < input.length(); i++) {
 		
@@ -201,7 +215,7 @@ std::string Coder::otp_cipher(int en_de, std::string input) {
 			Temp.push_back(input[i]);
 
 			std::string keyTemp = "";
-			keyTemp.push_back(this->_key[keyCounter]);
+			keyTemp.push_back(key[keyCounter]);
 
 			//Move to next character in key (prevents program from trying to encrypt unnecessary characters, such as
 			//symbols and special characters
@@ -222,11 +236,19 @@ std::string Coder::otp_cipher(int en_de, std::string input) {
 
 
 std::string Coder::caesars_cipher(int en_de, std::string input) {
-    int key = std::stoi(this->_key);
     std::string translate_alpha;
     std::string translation;    //variable to store new text
     std::string dec_text;     //variable to temp store value
     std::string empty = " ";
+    int key;
+
+    if (this->_key.empty()) {
+        key = rand();
+        std::cout << "Key: " << key << std::endl;
+    }
+    else { 
+        key = std::stoi(this->_key);
+    }
     
     if (!en_de) {
         translate_alpha = "abcdefghijklmnopqrstuvwxyz";

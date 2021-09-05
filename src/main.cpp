@@ -46,6 +46,7 @@ int main(int argc, char** argv) {
                 if (cipher_found == false) {
                     std::cout << "Cipher not available in tool" << std::endl;
                     help();
+
                     return 0;
                 }
             }
@@ -87,6 +88,17 @@ int main(int argc, char** argv) {
         app.run(); 
     }
     else {
+        if (in_file.empty()) {
+            std::cout << "Error: missing required argument IN_FILE" << std::endl;
+            help();
+
+            return 1;
+        }
+
+        if (out_file.empty()) {
+            out_file = in_file;
+        }
+
         Coder coder(coder_cipher, key);
 
         if (en) {
@@ -104,7 +116,24 @@ int main(int argc, char** argv) {
 }
 
 void help() {
-    std::cout << "Usage: cipher_tool [OPTION]" << std::endl;
+    std::cout << "Usage: cipher_tool [OPTION] --gui/--input-file=IN_FILE" << std::endl;
+    std::cout << "Options:" <<std::endl;
+    std::cout << "  -c, --cipher=CIPHER\t\tcipher to encrypt/decrypt with defaults to XOR" << std::endl;
+    std::cout << "  -d, --decrypt\t\t\ttool will decrypt the input" << std::endl;
+    std::cout << "  -e, --encrypt\t\t\ttool will encrypy the input default" << std::endl;
+    std::cout << "  -g, --gui\t\t\tuse the tool with gui" << std::endl;
+    std::cout << "  -h, --help\t\t\tshows this message" << std::endl;
+    std::cout << "  -i, --input-file=IN_FILE\tfile to read input data from required when not using gui" << std::endl;
+    std::cout << "  -k, --key=KEY\t\t\tkey used by some ciphers defualts to random key" << std::endl;
+    std::cout << "\t\t\t\tsee Ciphers for specific info on keys required for each cipher" << std::endl;
+    std::cout << "  -o, --output-file=OUT_FILE\tfile to write output data to defaults to same as IN_FILE" << std::endl;
+    std::cout << "\nCiphers:" << std::endl;
+    std::cout << "  XOR\t\tKEY of any length as a string" << std::endl;
+    std::cout << "  AES\t\tKEY of any length as a string" << std::endl;
+    std::cout << "  OTP\t\tKEY of length equal to or greater than data as a string" << std::endl;
+    std::cout << "  Caesars\tKEY as an integer" << std::endl;
+    std::cout << "  ROT13\t\tno KEY taken" << std::endl;
+    std::cout << "  Vigenere\tKEY of any length as a string" << std::endl;
 }
 
 Menus start_menu(std::string cipher) {

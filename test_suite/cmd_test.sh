@@ -5,8 +5,6 @@ if [ ! -f bin/cipher_tool ]; then
     exit 1
 fi 
 
-CIPHERS=( "XOR" "AES" "OTP" "Caesars" "ROT13" "Vigenere" )
-
 if [ ! -d test_suite/txt ]; then
     mkdir -p test_suite/txt
 fi
@@ -15,13 +13,29 @@ if [ ! -f test_suite/txt/plaintext.txt ]; then
     echo "Egg blah blah" > test_suite/txt/plaintext.txt
 fi
 
+if [ -f test_suite/txt/plaintext.txt ]; then
+    tr [a-z] [A-Z] < test_suite/txt/plaintext.txt > test_suite/txt/upper_plaintext.txt
+fi
+
+CIPHERS=( "XOR" "AES" "OTP" "Caesars" "ROT13" "Vigenere" )
+
 for cipher in ${CIPHERS[@]}; do
     echo "Testing $cipher from command line"
 
-    ./bin/cipher_tool --cipher $cipher --encrypt --key 1234 --input-file test_suite/txt/plaintext.txt --output-file test_suite/txt/ciphertext.txt
-    ./bin/cipher_tool --cipher $cipher --decrypt --key 1234 --input-file test_suite/txt/ciphertext.txt --output-file test_suite/txt/decrypted_plaintext.txt
+    ENCRYPT="./bin/cipher_tool --cipher $cipher --encrypt --input-file test_suite/txt/plaintext.txt --output-file test_suite/txt/ciphertext.txt"
 
-    INPUT_TXT=$(cat test_suite/txt/plaintext.txt)
+    echo "$ENCRYPT"
+    KEY=$(eval "$ENCRYPT" | cut -d' ' -f2)
+
+    DECRYPT="./bin/cipher_tool --cipher $cipher --decrypt --key $KEY --input-file test_suite/txt/ciphertext.txt --output-file test_suite/txt/decrypted_plaintext.txt"
+    echo "$DECRYPT"
+    eval "$DECRYPT"
+
+    if [ "$cipher" == "OTP" ]; then 
+        INPUT_TXT=$(cat test_suite/txt/upper_plaintext.txt)
+    else
+        INPUT_TXT=$(cat test_suite/txt/plaintext.txt)
+    fi
     OUTPUT_TXT=$(cat test_suite/txt/decrypted_plaintext.txt)
 
     if [ "${OUTPUT_TXT}" == "${INPUT_TXT}" ]; then
