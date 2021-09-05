@@ -11,7 +11,7 @@ endif
 CC=g++
 CFLAGS=-Wall -g
 OBJS=application.o main.o 
-COMPILED_OBJS=ciphers/aes.o ciphers/otp.o ciphers/xor.o \
+COMPILED_OBJS=ciphers/aes.o ciphers/otp.o ciphers/xor.o ciphers/coder.o \
 			menus/aes_menu.o menus/finn_menu.o menus/james_menu.o \
 			menus/jj_menu.o menus/main_menu.o menus/menu.o menus/xor_menu.o
 TARGET=../bin/cipher_tool

@@ -1,15 +1,23 @@
 #include "application.h"
+#include "ciphers/coder.h"
 
-std::string cipher = "Null";
-std::string file = "";
-std::string key = "";
-bool gui = false;
 const std::string ciphers[6] = {"XOR", "AES", "OTP", "Caesars", "ROT13", "Vigenere"};
 
 void help();
 Menus start_menu(std::string cipher);
+std::string read_file(std::string file_name);
+void write_file(std::string file_name, std::string data);
+int get_file_size(std::string file_name);
 
 int main(int argc, char** argv) {
+    std::string cipher = "Null";
+    Ciphers coder_cipher = Xor;
+    std::string in_file = "";
+    std::string out_file = "";
+    std::string key = "";
+    bool gui = false;
+    bool en = true;
+
     for (int i = 0; i < argc; i++) {
         std::string arg = std::string(argv[i]);
 
@@ -26,9 +34,12 @@ int main(int argc, char** argv) {
                 cipher = std::string(argv[i]);
 
                 bool cipher_found = false;
-                for (int i = 0; i < 6; i++) {
-                    if (cipher == ciphers[i] || cipher == "Null") {
-                        cipher_found = true;
+                if (cipher != "Null") {
+                    for (int i = 0; i < 6; i++) {
+                        if (cipher == ciphers[i]) {
+                            cipher_found = true;
+                            coder_cipher = static_cast<Ciphers>(i);
+                        }
                     }
                 }
 
@@ -38,12 +49,19 @@ int main(int argc, char** argv) {
                     return 0;
                 }
             }
-            else if (arg.substr(0,5) == "file=") {
-                file = arg.substr(5, std::string::npos);
+            else if (arg.substr(0,5) == "--input-file=") {
+                in_file = arg.substr(5, std::string::npos);
             }
-            else if (arg == "--file" || arg == "-f") {
+            else if (arg == "--input-file" || arg == "-i") {
                 i++;
-                file = std::string(argv[i]);
+                in_file = std::string(argv[i]);
+            }
+            else if (arg.substr(0,5) == "--output-file=") {
+                out_file = arg.substr(5, std::string::npos);
+            }
+            else if (arg == "--output-file" || arg == "-o") {
+                i++;
+                out_file = std::string(argv[i]);
             }
             else if (arg.substr(0,4) == "key=") {
                 key = arg.substr(4, std::string::npos);
@@ -55,6 +73,12 @@ int main(int argc, char** argv) {
             else if (arg == "--gui" || arg == "-g") {
                 gui = true;
             }
+            else if (arg == "--encrypt" || arg == "-e") {
+                en = true;
+            }
+            else if (arg == "--decrypt" || arg == "-d") {
+                en = false;
+            }
         }
     }
 
@@ -63,7 +87,17 @@ int main(int argc, char** argv) {
         app.run(); 
     }
     else {
-        std::cout << "cipher: " << cipher << "\nfile: " << file << "\nkey: " << key << std::endl;
+        Coder coder(coder_cipher, key);
+
+        if (en) {
+            std::string ciphertext = coder.encrypt(read_file(in_file));
+            write_file(out_file, ciphertext);
+        }
+        
+        if (!en) {
+            std::string plaintext = coder.decrypt(read_file(in_file));
+            write_file(out_file, plaintext);
+        }
     }
 
     return 0; 
@@ -90,5 +124,61 @@ Menus start_menu(std::string cipher) {
     }
 
     return s_menu;
+}
+
+std::string read_file(std::string file_name) {
+    std::ifstream in_file(file_name);
+    std::stringstream data;
+
+    if (in_file.is_open()) {
+        // get the size of the file
+        int size = get_file_size(file_name);
+        int counter = 0;
+        while (!in_file.eof()) {
+            std::string line{};
+            // each line is read individually to get any formatting, e.g. whitespace and tabs
+            std::getline(in_file, line);
+            data << line;
+            counter++; // a counter is incremented
+            // the new line character should not be added on the final line
+            if (counter != size) {
+                // the new line character is excluded by the getline function so it must be added manually
+                data << std::endl;
+            }
+        }
+    }
+    in_file.close();
+
+    return data.str();
+}
+
+void write_file(std::string file_name, std::string data) {
+    std::ofstream out_file(file_name);
+
+    if (out_file.is_open()) {
+        out_file << data;
+    } 
+
+    out_file.close();
+}
+
+// function to count the number of lines in a file
+int get_file_size(std::string file_name) {
+    int count = 0;
+    std::ifstream file(file_name);
+
+    if (file.is_open()) {
+        std::string line{};
+        // read the lines of the file until the end of the file
+        while (!file.eof()) {
+            std::getline(file, line);
+            // every time a line is read the counter increments
+            count++;
+        }
+        // once the end of the file is reached close the file
+        file.close();
+    }
+
+    return count;
 }
 

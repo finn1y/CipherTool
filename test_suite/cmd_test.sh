@@ -18,9 +18,13 @@ fi
 for cipher in ${CIPHERS[@]}; do
     echo "Testing $cipher from command line"
 
-    OUTPUT=$(./bin/cipher_tool --cipher $cipher --key 1234 --file test_suite/txt/plaintext.txt | grep "cipher")
+    ./bin/cipher_tool --cipher $cipher --encrypt --key 1234 --input-file test_suite/txt/plaintext.txt --output-file test_suite/txt/ciphertext.txt
+    ./bin/cipher_tool --cipher $cipher --decrypt --key 1234 --input-file test_suite/txt/ciphertext.txt --output-file test_suite/txt/decrypted_plaintext.txt
 
-    if [ ${OUTPUT:7} == $cipher ]; then
+    INPUT_TXT=$(cat test_suite/txt/plaintext.txt)
+    OUTPUT_TXT=$(cat test_suite/txt/decrypted_plaintext.txt)
+
+    if [ "${OUTPUT_TXT}" == "${INPUT_TXT}" ]; then
         echo "Test passed"
     else 
         echo "Test failed"

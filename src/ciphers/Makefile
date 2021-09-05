@@ -10,9 +10,12 @@ endif
 
 CC=g++
 CFLAGS=-Wall -g
-OBJS=xor.o aes.o otp.o
+OBJS=xor.o aes.o otp.o coder.o
 
 all: ${OBJS}
+
+coder.o: coder.cpp coder.h
+	${CC} ${CFLAGS} -c $^
 
 otp.o: otp.cpp otp.h
 	${CC} ${CFLAGS} -c $^
