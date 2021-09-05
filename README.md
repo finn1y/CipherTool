@@ -4,6 +4,30 @@ Command line interface gui tool for encrypting and decrypting files or standard 
 
 Project by: Finn, JJ & James
 
+## Help
+
+```
+Usage: cipher_tool [OPTION]
+Options:
+  -c, --cipher=CIPHER           cipher to encrypt/decrypt with defaults to XOR
+  -d, --decrypt                 tool will decrypt the input
+  -e, --encrypt                 tool will encrypy the input
+  -g, --gui                     use the tool with gui
+  -h, --help                    shows this message
+  -i, --input-file=IN_FILE      file to read input data from
+  -k, --key=KEY                 key used by some ciphers will defualt to random key
+                                see Ciphers for specific info on keys required for each cipher
+  -o, --output-file=OUT_FILE    file to write output data to
+
+Ciphers:
+  XOR           KEY of any length as a string
+  AES           KEY of any length as a string
+  OTP           KEY
+  Caesars       KEY as an integer
+  ROT13         no KEY taken
+  Vigenere      KEY of any length as a string
+```
+
 ## Install
 1. Clone the repo:
 
