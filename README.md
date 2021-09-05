@@ -15,11 +15,11 @@ git clone https://github.com/finn1y/CipherTool.git
 
       Linux
       ```
-      ./cipher_tool-linux64
+      ./cipher_tool-linux64 --gui
       ```
       Windows
       ```
-      .\cipher_tool-win64.exe
+      .\cipher_tool-win64.exe --gui
       ```
 4. Happy encrypting!
 
@@ -42,6 +42,6 @@ make all
 5. Run: 
 
 ```
-./cipher_tool
+./cipher_tool --gui
 ```
 6. Happy encrypting!
