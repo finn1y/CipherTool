@@ -41,7 +41,7 @@ echo "Running smoke tests"
 ./test_suite/cmd_test.sh | tee -a test_status
 
 #Check for pass or fail
-FAILS=`grep -l "Test failed" test_status | wc -l`
+FAILS=`grep -c "Test failed" test_status`
 
 if [ $FAILS -gt 0 ]; then
     echo "Failed $FAILS tests"

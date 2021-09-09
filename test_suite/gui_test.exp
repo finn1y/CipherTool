@@ -11,7 +11,7 @@ proc help_msg {} {
     puts "  CIPHER\tcipher to test"
     puts "  FILE\t\tfile to perform tests on\n"
     puts "Ciphers:"
-    puts "  XOR\n  Rjindaels (AES)\n  One-Time Pad (OTP)"
+    puts "  XOR\n  Rjindaels (AES)\n  One-Time Pad (OTP)\n  Caesars\n  ROT13\n  Vigenere"
     exit 0
 }
 
@@ -59,8 +59,30 @@ switch [lindex $argv 0] {
         set main_menu 2;
     }
 
+    "Caesars" -
+    "caesars" {
+        puts "Testing Ceasars cipher gui"
+
+        set main_menu 3;
+        set second_menu 1;
+    }
+
+    "ROT13" {
+        puts "Testing ROT13 cipher gui"
+
+        set main_menu 3;
+        set second_menu 2;    
+    }
+
+    "Vigenere" {
+        puts "Testing Vigenere cipher gui"
+
+        set main_menu 3;
+        set second_menu 3;
+    }
+
     default {
-        puts "Unknown cipher supplied\nChoose one of:\n'XOR'\n'AES'\n'OTP'"
+        puts "Unknown cipher supplied\nChoose one of:\n  'XOR'\n  'AES'\n  'OTP'\n  'Caesars'\n  'ROT13'\n  'Vigenere'"
         exit 1
     }
 }
@@ -197,8 +219,19 @@ switch $main_menu {
         expect "Enter desired menu option: "
         send "$second_menu\n"
         
+        switch $second_menu {
+            1 {
+                #Caesars
+            }
+
+            2 {
+                #ROT13
+            }
+
+            3 {
+                #Vigenere
+            }
+        }
     }
 }
 
-#for debug
-#interact
