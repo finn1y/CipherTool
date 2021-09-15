@@ -47,12 +47,14 @@ for i in {0..5}; do
     fi
 
     OUTPUT_TXT="test_suite/txt/decrypted_plaintext.txt"
-    DIFF=$(diff $INPUT_TXT $OUTPUT_TXT)
+    DIFF=$(diff -aZ $INPUT_TXT $OUTPUT_TXT)
 
     if [ "$DIFF" == "" ]; then
         echo "Test passed"
     else 
         echo "Test failed"
+
+        echo "$DIFF"
     fi
 done
 

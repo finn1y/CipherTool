@@ -43,6 +43,8 @@ class Coder {
         std::string caesars_cipher(int en_de, std::string input);
         std::string rot13_cipher(int en_de, std::string input);
         std::string vigenere_cipher(int en_de, std::string input);
+        std::string makekey(std::string input);
+        std::vector<int> vigenere_key(std::string keyword);
 
 };
 

@@ -331,6 +331,7 @@ std::string Coder::vigenere_cipher(int en_de, std::string input) {
     std::string empty = " ";
     int counter = 0;
 
+    std::vector<int> dynkey = this->vigenere_key(this->makekey(input));
     for (int i=0; i<input.length(); i++){
         //if whitespace just add a space in the decrypted variable
         if (isspace(input[i])){
@@ -348,7 +349,7 @@ std::string Coder::vigenere_cipher(int en_de, std::string input) {
             for (int x=0;x<26;x++){
                 //compare values from text and conv using key
                 if (input[i]==alphabet[x]){
-//                    vigenere = alphabet[((x+dynkey[(counter)]-1)%26)];
+                    vigenere = alphabet[((x+dynkey[(counter)]-1)%26)];
                     translation = translation + vigenere;
                 }//endif
             }//endfor
@@ -359,3 +360,33 @@ std::string Coder::vigenere_cipher(int en_de, std::string input) {
     return translation;
 }
 
+std::string Coder::makekey(std::string input) {
+    std::string newkey = "";
+    int textlen = input.length();
+    int repeat = round((input.length()/this->_key.length())+1);
+    for (int i=1; i<=repeat; i++){
+        newkey = newkey + this->_key;
+    }
+    while(newkey.length() > textlen){
+        newkey.pop_back();
+    }
+    return newkey;
+}
+
+std::vector<int> Coder::vigenere_key(std::string keyword) {
+    std::string alphabet ="abcdefghijklmnopqrstuvwxyz";
+    int length = keyword.length();
+    std::vector<int> key;
+    for (int i=0; i< keyword.length(); i++){
+        for (int j=0;j<26;j++){
+            if (keyword[i]==alphabet[j]){
+                key.push_back(j+1);
+            }//endif
+            else if (isspace(keyword[i])){
+                key.push_back(0);
+            }
+        }//endfor
+    }//endfor
+
+    return key;
+}
