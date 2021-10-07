@@ -1,8 +1,12 @@
 # CipherTool
 
+## About
+
 Command line interface gui tool for encrypting and decrypting files or standard input using several different ciphers
 
 Project by: Finn, JJ & James
+
+The repository is split into: a source code directory containing all the source code and make files to buld the project; a test suite to test the project, which also includes a continous integration bash script to be run on the project before committing to the repository and a binary folder which contains pre-built binaries for windows and linux systems.
 
 ## Help
 
