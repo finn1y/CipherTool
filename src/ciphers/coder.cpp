@@ -1,7 +1,9 @@
 #include "coder.h"
 
 Coder::Coder() {
+    //cipher defaults to XOR
     this->_cipher = Xor;
+    //key defaults to empty and therefore random
     this->_key = "";    
 }
 
@@ -22,6 +24,7 @@ std::string Coder::encrypt(std::string plaintext) {
 
     switch (this->_cipher) {
         case Xor:
+            //0 argument for encryption
             ciphertext = this->xor_cipher(0, plaintext);
             break;
 
@@ -54,6 +57,7 @@ std::string Coder::decrypt(std::string ciphertext) {
 
     switch (this->_cipher) {
         case Xor:
+            //1 argument to perform decryption
             plaintext = this->xor_cipher(1, ciphertext);
             break;
 

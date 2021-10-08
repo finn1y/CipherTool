@@ -28,6 +28,7 @@ if [ ! -d test_suite/txt ]; then
     mkdir -p test_suite/txt
 fi
 
+#Populate test data
 echo "Black pudding is a distinct regional type of blood sausage originating in Great Britain and Ireland. It is made from pork or beef blood, with pork fat or beef suet, and a cereal, usually oatmeal, oat groats or barley groats. The high proportion of cereal, along with the use of certain herbs such as pennyroyal, serves to distinguish black pudding from blood sausages eaten in other parts of the world.[1]" > test_suite/txt/plaintext.txt
 
 #Smoke tests
@@ -40,12 +41,15 @@ echo "Running smoke tests"
 #Check for pass or fail
 FAILS=`grep -c "Test failed" test_status`
 
+#If any fails then CI should fail
 if [ $FAILS -gt 0 ]; then
     echo "Failed $FAILS tests"
+    #Exit non-zero for fail
     exit 1
 fi
 
 #Remove files created by tests
 rm -rf test_suite/txt/*
 
+#Exit zero for pass
 exit 0
